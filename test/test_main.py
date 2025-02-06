@@ -39,6 +39,7 @@ def test_count_words(test_client, samples):
     res_div = parsed_response.find("div", class_="result")
 
     assert response.status_code == 200
+    assert res_div is not None 
     assert "Word count: 9" in res_div.text
 
 
@@ -52,6 +53,7 @@ def test_count_multiline(test_client, samples):
     res_div = parsed_response.find("div", class_="result")
 
     assert response.status_code == 200
+    assert res_div is not None 
     assert "Word count: 8" in res_div.text
 
 def test_count_with_numbers(test_client, samples):
@@ -64,6 +66,7 @@ def test_count_with_numbers(test_client, samples):
     res_div = parsed_response.find("div", class_="result")
 
     assert response.status_code == 200
+    assert res_div is not None 
     assert "Word count: 10" in res_div.text
 
 def test_count_long_words(test_client, samples):
@@ -74,8 +77,9 @@ def test_count_long_words(test_client, samples):
 
     parsed_response = BeautifulSoup(response.text, "html.parser")
     res_div = parsed_response.find("div", class_="error")
-    print(res_div)
+
     assert response.status_code == 200
+    assert res_div is not None 
     assert f"The input is too long (max {WORD_MAX_LEN} characters)" in res_div.text
 
 def test_count_words_emoji(test_client, samples):
@@ -113,5 +117,6 @@ def test_empty_words(test_client, samples):
     res_div = parsed_response.find("div", class_="error")
 
     assert response.status_code == 200
+    assert res_div is not None 
     assert "A text input is required" in res_div.text
 
