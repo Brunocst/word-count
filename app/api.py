@@ -21,26 +21,39 @@ async def file(request: Request):
 @app.post("/", response_class= HTMLResponse)
 async def process_response(request: Request, text: str=Form("")):
     """Process the text and return the number of requests"""
-    error = None
-    count = None
-
     try:
         if not text:
-            error = "A text input is required"
+            context = {
+                "request": request,
+                "error" : "A text input is required"
+            }
+            return templates.TemplateResponse("index.html", context)
+        
         elif len(text) > WORD_MAX_LEN:
-            error = f"The input is too long (max {WORD_MAX_LEN} characters)"
+            context = {
+                "request": request,
+                "error" : f"The input is too long (max {WORD_MAX_LEN} characters)"
+            }
+            return templates.TemplateResponse("index.html", context)
+        
         else:
             sentence = WordCount(text)
             count = sentence.text_processing_pipeline()
+
+            context = {
+                "request": request,
+                "text": text,
+                "word_count": count
+            }
+
+            return templates.TemplateResponse("index.html", context)
+        
     except Exception as e:
         print(f"Error {e} while processing the text")
-        error = "Unexpected error while handling the text"
+        return templates.TemplateResponse("index.html", {
+            "request": request,
+            "error": "Unexpected error while handling the text"
+        })
 
-    context = {
-        "request": request,
-        "text": text,
-        "word_count": count,
-        "error": error
-    }
 
-    return templates.TemplateResponse("index.html", context)
+
