@@ -1,15 +1,43 @@
-# word-count
+# Word-count
 A web application that count words in the text input
 
-## Assumptions
-1. I am not considering single numbers as words;
-2. I don't count ponctuation as words;
-3. I am not considering emojis as words;
-4. If there is at least one valid string in a word I am considering it a valid word, example: great!, hel1o;
-5. The maximum length accepted is 10.000 characters;
-6. The delimiters identified by the aplication are: ' ', '-', '|';
-7. I am requiring when filling the input text box at least 1 char.
+# Rules & Assumptions
 
+## 1. Word Definition Criteria
+
+### Excluded as words:
+- **Numeric sequences:**  
+  Examples: `"123"`, `"45.6"`
+- **Independent punctuation marks:**  
+  Examples: `"!"`, `"?"`
+- **Emoji characters:**  
+  Examples: `"👍"`, `"😀"`
+
+### Valid word requirements:
+- Must contain at least one alphabetic character
+
+**Examples:**  
+`"great!"`, `"hel1o"`, `"test123"`
+
+---
+
+## 2. Input Constraints
+
+### Minimum requirement:
+- At least 1 non-whitespace character
+
+### Maximum capacity:
+- 10,000 character limit (including whitespace)
+- Submissions exceeding the limit are rejected
+
+---
+
+## 3. Word Separation Logic
+
+### Primary delimiters:
+```python
+[" ", "-", "|"]  # Space, Hyphen, Vertical Pipe
+```
 ## Usage on docker
 Build the docker image
 ```
@@ -37,12 +65,12 @@ The count functionality, multiline texts, texts bigger than max size, text with 
 ## Output sample
 ![alt text](image.png)
 
-# Next steps
-- Need to develop support for non latin languages such as Japanese and Korean;
-- The algorithm can be optimized for better performance in the space and time dimensions;
-- The supported delimiters can be expanded 
-- Add support on the frontend for word count frequency
-- Add logging to the application
-- Expand tests to cover more edge cases
-- Resolve the deprecated warning
-- Add a login to the form
+## Next steps
+#### Need to develop support for non latin languages such as Japanese and Korean;
+#### The algorithm can be optimized for better performance in the space and time dimensions;
+#### The supported delimiters can be expanded 
+#### Add support on the frontend for word count frequency
+#### Add logging to the application
+#### Expand tests to cover more edge cases
+#### Resolve deprecationg warning
+#### Add a login to the form
