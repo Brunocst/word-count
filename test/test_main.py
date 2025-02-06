@@ -25,6 +25,15 @@ def samples():
         "empty": ""
     }
 
+def error_checker_helper(response, count=None):
+    
+    parsed_response = BeautifulSoup(response.text, "html.parser")
+    res_div = parsed_response.find("div", class_="result")
+
+    assert res_div is not None 
+    assert f"Word count: {count}" in res_div.text
+
+
 def test_main(test_client):
     response = test_client.get("/")
     assert response.status_code == 200
@@ -35,12 +44,8 @@ def test_count_words(test_client, samples):
         data = {"text": samples["count"]}
     )
 
-    parsed_response = BeautifulSoup(response.text, "html.parser")
-    res_div = parsed_response.find("div", class_="result")
-
     assert response.status_code == 200
-    assert res_div is not None 
-    assert "Word count: 9" in res_div.text
+    error_checker_helper(response, 9)
 
 
 def test_count_multiline(test_client, samples):
@@ -49,12 +54,9 @@ def test_count_multiline(test_client, samples):
         data = {"text": samples["multiline"]}
     )
 
-    parsed_response = BeautifulSoup(response.text, "html.parser")
-    res_div = parsed_response.find("div", class_="result")
-
     assert response.status_code == 200
-    assert res_div is not None 
-    assert "Word count: 8" in res_div.text
+    error_checker_helper(response, 8)
+
 
 def test_count_with_numbers(test_client, samples):
     response = test_client.post(
@@ -62,12 +64,9 @@ def test_count_with_numbers(test_client, samples):
         data = {"text": samples["numbers"]}
     )
 
-    parsed_response = BeautifulSoup(response.text, "html.parser")
-    res_div = parsed_response.find("div", class_="result")
-
     assert response.status_code == 200
-    assert res_div is not None 
-    assert "Word count: 10" in res_div.text
+    error_checker_helper(response, 10)
+
 
 def test_count_long_words(test_client, samples):
     response = test_client.post(
@@ -88,11 +87,8 @@ def test_count_words_emoji(test_client, samples):
         data = {"text": samples["emoji"]}
     )
 
-    parsed_response = BeautifulSoup(response.text, "html.parser")
-    res_div = parsed_response.find("div", class_="result")
-
     assert response.status_code == 200
-    assert "Word count: 10" in res_div.text
+    error_checker_helper(response, 10)
 
 def test_count_hyphen_delimiter(test_client, samples):
     response = test_client.post(
@@ -100,11 +96,8 @@ def test_count_hyphen_delimiter(test_client, samples):
         data = {"text": samples["delimiter"]}
     )
 
-    parsed_response = BeautifulSoup(response.text, "html.parser")
-    res_div = parsed_response.find("div", class_="result")
-
     assert response.status_code == 200
-    assert "Word count: 4" in res_div.text
+    error_checker_helper(response, 4)
 
 
 def test_empty_words(test_client, samples):
